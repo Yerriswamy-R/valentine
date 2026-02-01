@@ -30,9 +30,7 @@
         box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     }
 
-    h2 span {
-        color: #ff4d6d;
-    }
+    h2 span { color: #ff4d6d; }
 
     button {
         padding: 12px 25px;
@@ -43,17 +41,9 @@
         margin: 10px;
     }
 
-    #yesBtn {
-        background: #ff4d6d;
-        color: #fff;
-    }
+    #yesBtn { background: #ff4d6d; color: #fff; }
+    #noBtn { background: #ccc; position: absolute; }
 
-    #noBtn {
-        background: #ccc;
-        position: absolute;
-    }
-
-    /* Mobile-only text */
     .mobile-only {
         display: none;
         margin-top: 10px;
@@ -61,13 +51,8 @@
         color: #ff4d6d;
     }
 
-    @media (max-width: 768px) {
-        .mobile-only {
-            display: block;
-        }
-    }
+    @media (max-width: 768px) { .mobile-only { display: block; } }
 
-    /* Falling hearts */
     .heart {
         position: fixed;
         top: -10px;
@@ -76,17 +61,13 @@
         z-index: 1;
     }
 
-    @keyframes fall {
-        to {
-            transform: translateY(110vh);
-        }
-    }
+    @keyframes fall { to { transform: translateY(110vh); } }
 </style>
 </head>
 
 <body>
 
-<!-- 🎶 Background Music -->
+<!-- Background Music -->
 <audio autoplay loop>
     <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
 </audio>
@@ -98,60 +79,50 @@
     <button id="yesBtn">YES 😍</button>
     <button id="noBtn">NO 😉</button>
 
-    <div class="mobile-only">
-        📱 Best viewed on phone 😉
-    </div>
+    <div class="mobile-only">📱 Best viewed on phone 😉</div>
 </div>
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-
     const noBtn = document.getElementById("noBtn");
     const yesBtn = document.getElementById("yesBtn");
     const popup = document.querySelector(".popup");
 
-    // Move NO button
+    // Move NO button when hovered/touched
     ["mouseenter", "touchstart"].forEach(evt => {
         noBtn.addEventListener(evt, () => {
             const maxX = popup.clientWidth - noBtn.offsetWidth;
             const maxY = popup.clientHeight - noBtn.offsetHeight;
-
             noBtn.style.left = Math.random() * maxX + "px";
             noBtn.style.top = Math.random() * maxY + "px";
         });
     });
 
-    // YES click
-const yesBtn = document.getElementById("yesBtn");
+    // YES click - WhatsApp notification + celebration
+    yesBtn.addEventListener("click", () => {
+        const myNumber = "919908028233"; // WhatsApp number with country code
+        const message = encodeURIComponent("Yaaayyy 😍❤️ Meena just clicked YES on your Valentine popup!");
+        window.open(`https://wa.me/${myNumber}?text=${message}`, "_blank");
 
-yesBtn.addEventListener("click", () => {
-    // Replace with your WhatsApp number including country code (no + sign)
-    const myNumber = "9908028233"; 
-    const message = encodeURIComponent("Yaaayyy 😍❤️ Meena just clicked YES on your Valentine popup!");
-
-    // Open WhatsApp chat in new tab
-    window.open(`https://wa.me/${myNumber}?text=${message}`, "_blank");
-
-    // Show your cute celebration popup
-    document.body.innerHTML = `
-        <div style="
-            height:100vh;
-            display:flex;
-            justify-content:center;
-            align-items:center;
-            background:linear-gradient(135deg,#ff758c,#ff7eb3);
-            color:white;
-            text-align:center;
-            font-family:Arial;">
-            <div>
-                <h1>Yaaayyy 😍❤️</h1>
-                <p>This just turned into my favorite day ever 💖</p>
+        document.body.innerHTML = `
+            <div style="
+                height:100vh;
+                display:flex;
+                justify-content:center;
+                align-items:center;
+                background:linear-gradient(135deg,#ff758c,#ff7eb3);
+                color:white;
+                text-align:center;
+                font-family:Arial;">
+                <div>
+                    <h1>Yaaayyy 😍❤️</h1>
+                    <p>This just turned into my favorite day ever 💖</p>
+                </div>
             </div>
-        </div>
-    `;
-});
+        `;
+    });
 
-    // Create falling hearts
+    // Falling hearts
     setInterval(() => {
         const heart = document.createElement("div");
         heart.className = "heart";
@@ -159,7 +130,6 @@ yesBtn.addEventListener("click", () => {
         heart.style.left = Math.random() * 100 + "vw";
         heart.style.animationDuration = (Math.random() * 3 + 2) + "s";
         document.body.appendChild(heart);
-
         setTimeout(() => heart.remove(), 5000);
     }, 300);
 });
@@ -167,7 +137,3 @@ yesBtn.addEventListener("click", () => {
 
 </body>
 </html>
-
-
-
-
