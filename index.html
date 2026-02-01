@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <title>Always Us ❤️</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💖</text></svg>">
 
 <style>
     body {
@@ -78,6 +79,7 @@
         font-size: 20px;
         animation: fall linear infinite;
         z-index: 1;
+        pointer-events: none;
     }
 
     @keyframes fall { 
@@ -138,12 +140,23 @@
     </p>
 </div>
 
-<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<!-- Use EmailJS SDK v4 (Latest) -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
     
-    // ✅ Initialize EmailJS with YOUR Public Key
-    emailjs.init("EJAqOX-uvSbAgw8DU");
+    // ✅ Initialize EmailJS v4 with YOUR Public Key
+    emailjs.init({
+        publicKey: "EJAqOX-uvSbAgw8DU",
+        blockHeadless: true,
+        blockList: {
+            list: ['foo@emailjs.com', 'bar@emailjs.com'],
+        },
+        limitRate: {
+            id: 'app',
+            throttle: 10000, // 10 seconds
+        },
+    });
     
     const yesBtn = document.getElementById("yesBtn");
     const noBtn = document.getElementById("noBtn");
@@ -151,11 +164,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const loading = document.getElementById("loading");
     const bgMusic = document.getElementById("bgMusic");
     
+    console.log("🎯 Valentine Proposal Page Loaded");
+    console.log("📧 EmailJS Initialized");
+    
     // Optional: Play music on user interaction
     document.body.addEventListener('click', () => {
         if(bgMusic && bgMusic.paused) {
             bgMusic.volume = 0.3;
-            bgMusic.play().catch(e => console.log("Autoplay prevented"));
+            bgMusic.play().catch(e => console.log("Autoplay prevented, click play button"));
         }
     });
     
@@ -182,12 +198,14 @@ document.addEventListener("DOMContentLoaded", () => {
         
         const templateId = "template_qzeac8q";
         
-        try {  // ✅ ADDED MISSING TRY BLOCK
-            console.log(`Using template: ${templateId}`);
+        try {
+            console.log(`📤 Using template: ${templateId}`);
+            console.log(`📤 Service ID: service_a8y6rbg`);
             
+            // Send email using EmailJS v4
             const response = await emailjs.send(
                 "service_a8y6rbg",      // Your Service ID
-                templateId,             // ✅ Correct template ID
+                templateId,             // Correct template ID
                 {
                     to_name: "Yerri",
                     from_name: "Meena",
@@ -197,26 +215,30 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             );
             
-            console.log("✅ Email sent successfully!", response);
+            console.log("✅ Email sent successfully!");
             console.log("Status:", response.status);
-            console.log("Text:", response.text);
+            console.log("Response:", response);
             
             // Show success
             showSuccess();
             
         } catch (error) {
             console.error("❌ Email failed:", error);
-            console.error("Error details:", error.text || error);
+            console.error("Error details:", error);
             
-            // Show success anyway (email might fail but proposal is accepted)
+            // Show success anyway (proposal is accepted)
             showSuccess();
             
-            // Optional error alert
-            alert("Got your YES! 💖\n\n(Email failed, but I'll tell Yerri personally!)");
+            // Show error to user (optional)
+            setTimeout(() => {
+                alert("Got your YES! 💖\n\n(Email notification might have failed, but I'll tell Yerri personally!)");
+            }, 1000);
         }
     });
     
-    function showSuccess() {  // ✅ SINGLE FUNCTION (NOT DUPLICATE)
+    function showSuccess() {
+        console.log("🎉 Showing success page");
+        
         // Hide popup, show success message
         document.getElementById("mainPopup").style.display = "none";
         document.getElementById("successMessage").style.display = "block";
@@ -226,7 +248,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     
     function createHearts() {
-        // Create falling hearts animation
+        console.log("💖 Creating falling hearts");
+        
         const heartEmojis = ['❤️', '💖', '💕', '💗', '💓', '💘'];
         
         for(let i = 0; i < 50; i++) {
@@ -242,15 +265,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 
                 // Remove heart after animation
                 setTimeout(() => {
-                    heart.remove();
+                    if (heart.parentNode) {
+                        heart.remove();
+                    }
                 }, 5000);
             }, i * 100);
         }
     }
     
-    // Debug: Check if EmailJS loaded
-    console.log("EmailJS initialized:", typeof emailjs !== "undefined");
-    console.log("Template ID to use: template_qzeac8q");
+    // Debug info
+    console.log("🔧 Debug Info:");
+    console.log("Public Key: EJAqOX-uvSbAgw8DU");
+    console.log("Service ID: service_a8y6rbg");
+    console.log("Template ID: template_qzeac8q");
 });
 </script>
 </body>
