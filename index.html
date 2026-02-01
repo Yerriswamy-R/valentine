@@ -174,12 +174,18 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     
     yesBtn.addEventListener("click", async () => {
-    
-    yesBtn.innerHTML = "Sending love...";
-    yesBtn.disabled = true;
-    loading.style.display = "block";
-    const templateId = "template_qzeac8q";
-    const response = await emailjs.send(
+        console.log("💌 Starting email send process...");
+        
+        yesBtn.innerHTML = "Sending love...";
+        yesBtn.disabled = true;
+        loading.style.display = "block";
+        
+        const templateId = "template_qzeac8q";
+        
+        try {  // ✅ ADDED MISSING TRY BLOCK
+            console.log(`Using template: ${templateId}`);
+            
+            const response = await emailjs.send(
                 "service_a8y6rbg",      // Your Service ID
                 templateId,             // ✅ Correct template ID
                 {
@@ -190,7 +196,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     time: new Date().toLocaleTimeString()
                 }
             );
-          showSuccess();
+            
+            console.log("✅ Email sent successfully!", response);
+            console.log("Status:", response.status);
+            console.log("Text:", response.text);
+            
+            // Show success
+            showSuccess();
             
         } catch (error) {
             console.error("❌ Email failed:", error);
@@ -204,16 +216,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
     
-    function showSuccess() {
-        // Hide popup, show success message
-        document.getElementById("mainPopup").style.display = "none";
-        document.getElementById("successMessage").style.display = "block";
-        
-        // Create falling hearts animation
-        createHearts();
-    }
-    
-    function showSuccess() {
+    function showSuccess() {  // ✅ SINGLE FUNCTION (NOT DUPLICATE)
         // Hide popup, show success message
         document.getElementById("mainPopup").style.display = "none";
         document.getElementById("successMessage").style.display = "block";
@@ -247,9 +250,8 @@ document.addEventListener("DOMContentLoaded", () => {
     
     // Debug: Check if EmailJS loaded
     console.log("EmailJS initialized:", typeof emailjs !== "undefined");
+    console.log("Template ID to use: template_qzeac8q");
 });
 </script>
 </body>
 </html>
-
-
