@@ -122,25 +122,34 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // YES click
-    yesBtn.addEventListener("click", () => {
-            window.location.href = "mailto:yerriswamy038@gmail.com?subject=Be%20My%20Valentine&body=Yaaayyy%20😍❤️%0AYou%20just%20made%20my%20Valentine’s%20Day%20perfect%20💖";
-        document.body.innerHTML = `
-            <div style="
-                height:100vh;
-                display:flex;
-                justify-content:center;
-                align-items:center;
-                background:linear-gradient(135deg,#ff758c,#ff7eb3);
-                color:white;
-                text-align:center;
-                font-family:Arial;">
-                <div>
-                    <h1>Yaaayyy 😍❤️</h1>
-                    <p>This just turned into my favorite day ever 💖</p>
-                </div>
+const yesBtn = document.getElementById("yesBtn");
+
+yesBtn.addEventListener("click", () => {
+    // Replace with your WhatsApp number including country code (no + sign)
+    const myNumber = "919876543210"; 
+    const message = encodeURIComponent("Yaaayyy 😍❤️ Meena just clicked YES on your Valentine popup!");
+
+    // Open WhatsApp chat in new tab
+    window.open(`https://wa.me/${myNumber}?text=${message}`, "_blank");
+
+    // Show your cute celebration popup
+    document.body.innerHTML = `
+        <div style="
+            height:100vh;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            background:linear-gradient(135deg,#ff758c,#ff7eb3);
+            color:white;
+            text-align:center;
+            font-family:Arial;">
+            <div>
+                <h1>Yaaayyy 😍❤️</h1>
+                <p>This just turned into my favorite day ever 💖</p>
             </div>
-        `;
-    });
+        </div>
+    `;
+});
 
     // Create falling hearts
     setInterval(() => {
@@ -158,5 +167,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </body>
 </html>
+
 
 
