@@ -80,10 +80,12 @@
     <button id="noBtn">NO 😉</button>
 
     <div class="mobile-only">📱 Best viewed on phone 😉</div>
-</div>
-
+</div><script src="https://cdn.emailjs.com/dist/email.min.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
+
+    emailjs.init("EJAqOX-uvSbAgw8DU"); // ✅ your Public Key
+
     const noBtn = document.getElementById("noBtn");
     const yesBtn = document.getElementById("yesBtn");
     const popup = document.querySelector(".popup");
@@ -98,8 +100,24 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // YES click - Show celebration screen
+    // YES button click
     yesBtn.addEventListener("click", () => {
+
+        // 📧 Send Email
+        emailjs.send(
+            "service_a8y6rbg",        // ✅ Service ID
+            "template_love123",       // ❗ REPLACE with your Template ID
+            {
+                to_name: "Yerri 💕",
+                message: "Meena clicked YES 😍❤️"
+            }
+        ).then(() => {
+            console.log("Email sent ❤️");
+        }).catch(err => {
+            console.error("Email error:", err);
+        });
+
+        // 🎉 Celebration screen
         document.body.innerHTML = `
             <div style="
                 height:100vh;
@@ -116,20 +134,22 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
             </div>
         `;
-    });
 
-    // Falling hearts animation
-    setInterval(() => {
-        const heart = document.createElement("div");
-        heart.className = "heart";
-        heart.innerHTML = "💖";
-        heart.style.left = Math.random() * 100 + "vw";
-        heart.style.animationDuration = (Math.random() * 3 + 2) + "s";
-        document.body.appendChild(heart);
-        setTimeout(() => heart.remove(), 5000);
-    }, 300);
+        // 💖 Falling hearts
+        setInterval(() => {
+            const heart = document.createElement("div");
+            heart.className = "heart";
+            heart.innerHTML = "💖";
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.animationDuration = (Math.random() * 3 + 2) + "s";
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 5000);
+        }, 300);
+    });
 });
 </script>
 
+
 </body>
 </html>
+
