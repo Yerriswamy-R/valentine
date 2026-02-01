@@ -98,16 +98,8 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // YES click - WhatsApp notification + celebration
+    // YES click - Show celebration screen
     yesBtn.addEventListener("click", () => {
-        // ✅ Replace with your WhatsApp number including country code (no +)
-        const myNumber = "919908028233";
-        const message = encodeURIComponent("Yaaayyy 😍❤️ Meena just clicked YES on your Valentine popup!");
-
-        // Open WhatsApp reliably
-        window.open(`https://wa.me/${myNumber}?text=${message}`, "_blank");
-
-        // Show celebration screen
         document.body.innerHTML = `
             <div style="
                 height:100vh;
