@@ -14,6 +14,9 @@
         height: 100vh;
         overflow: hidden;
         color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     .popup {
@@ -102,20 +105,13 @@
     .success-screen h1 {
         font-size: 3em;
         margin-bottom: 20px;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
     }
     
     .loading {
         display: none;
         color: #ff4d6d;
         margin-top: 15px;
-    }
-    
-    /* Center the popup */
-    body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
     }
 </style>
 </head>
@@ -146,7 +142,6 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-    console.log("🚀 Page loaded successfully");
     
     const yesBtn = document.getElementById("yesBtn");
     const noBtn = document.getElementById("noBtn");
@@ -173,7 +168,6 @@ document.addEventListener("DOMContentLoaded", function() {
     
     // YES button click
     yesBtn.addEventListener("click", function() {
-        console.log("💖 YES button clicked");
         
         // Show loading
         yesBtn.disabled = true;
@@ -185,7 +179,6 @@ document.addEventListener("DOMContentLoaded", function() {
             const script = document.createElement('script');
             script.src = "https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js";
             script.onload = function() {
-                console.log("📧 EmailJS loaded");
                 
                 emailjs.init("EJAqOX-uvSbAgw8DU");
                 
@@ -196,10 +189,10 @@ document.addEventListener("DOMContentLoaded", function() {
                     date: new Date().toLocaleString()
                 })
                 .then(function(response) {
-                    console.log("✅ Email sent:", response.status);
+                    console.log("✅ Email sent");
                 })
                 .catch(function(error) {
-                    console.log("⚠️ Email failed:", error);
+                    console.log("⚠️ Email failed");
                 })
                 .finally(function() {
                     showSuccess();
@@ -207,39 +200,30 @@ document.addEventListener("DOMContentLoaded", function() {
             };
             
             script.onerror = function() {
-                console.log("⚠️ Couldn't load EmailJS");
                 showSuccess();
             };
             
             document.head.appendChild(script);
             
         } catch (error) {
-            console.log("⚠️ Error in email sending");
             showSuccess();
         }
     });
     
     function showSuccess() {
-        console.log("🎉 Showing success screen");
         
         // Hide popup, show success
         popup.style.display = "none";
         successScreen.style.display = "flex";
         
-        // Start continuous hearts
+        // Start continuous hearts AUTOMATICALLY
         startContinuousHearts();
     }
     
     // GLOBAL VARIABLE to control hearts
     let heartInterval;
-    let isHeartsActive = false;
     
     function startContinuousHearts() {
-        if (isHeartsActive) return; // Already running
-        
-        isHeartsActive = true;
-        console.log("💕 Starting continuous hearts...");
-        
         const loveEmojis = [
             '💘', '💝', '💖', '💗', '💓', '💞', '💕', '💟', '❣️',
             '💌', '💋', '👩‍❤️‍💋‍👨', '👨‍❤️‍💋‍👨', '👩‍❤️‍💋‍👩',
@@ -247,20 +231,16 @@ document.addEventListener("DOMContentLoaded", function() {
         ];        
         
         // Create initial burst of hearts
-        createHeartBurst(loveEmojis, 15);
+        for(let i = 0; i < 15; i++) {
+            setTimeout(() => {
+                createSingleHeart(loveEmojis);
+            }, i * 100);
+        }
         
-        // Start continuous creation every 300ms
+        // Start continuous creation every 300ms - INFINITE LOOP
         heartInterval = setInterval(() => {
             createSingleHeart(loveEmojis);
         }, 300);
-    }
-    
-    function createHeartBurst(emojis, count) {
-        for(let i = 0; i < count; i++) {
-            setTimeout(() => {
-                createSingleHeart(emojis);
-            }, i * 100); // Stagger them
-        }
     }
     
     function createSingleHeart(emojis) {
@@ -269,9 +249,7 @@ document.addEventListener("DOMContentLoaded", function() {
         heart.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
         heart.style.left = Math.random() * 100 + 'vw';
         heart.style.fontSize = (Math.random() * 25 + 25) + 'px';
-        heart.style.animationDuration = (Math.random() * 3 + 3) + 's'; // Slower fall
-        
-        // Random animation delay for variety
+        heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
         heart.style.animationDelay = (Math.random() * 0.5) + 's';
         
         document.body.appendChild(heart);
@@ -285,7 +263,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 heart.remove();
             }
         }, duration + delay + 500);
-    } 
+    }
   
 });
 </script>
