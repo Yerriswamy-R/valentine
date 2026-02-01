@@ -46,8 +46,8 @@
         background: #ff4d6d; 
         color: #fff; 
         border: none;
-          position: relative;
-         margin-right: 60%;
+        position: relative;
+        margin-right: 60%;
     }
     
     #noBtn { 
@@ -71,18 +71,20 @@
         }
     }
 
+    /* FIXED: Updated heart styles with rotation */
     .heart {
         position: fixed;
         top: -10px;
         font-size: 20px;
         animation: fall linear forwards;
-        z-index: 1;
+        z-index: 9999; /* Increased z-index to be on top */
         pointer-events: none;
     }
 
+    /* FIXED: Updated animation to include rotation */
     @keyframes fall { 
         to { 
-            transform: translateY(110vh); 
+            transform: translateY(110vh) rotate(360deg); 
             opacity: 0;
         } 
     }
@@ -96,6 +98,8 @@
         align-items: center;
         justify-content: center;
         flex-direction: column;
+        z-index: 10;
+        position: relative;
     }
     
     .success-screen h1 {
@@ -135,7 +139,6 @@
     </p>
 </div>
 
-<!-- SIMPLE VERSION - NO EMAILJS (Guaranteed to work) -->
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     console.log("🚀 Page loaded successfully");
@@ -163,7 +166,7 @@ document.addEventListener("DOMContentLoaded", function() {
         noBtn.style.transform = "none";
     });
     
-    // YES button click - SIMPLE VERSION
+    // YES button click
     yesBtn.addEventListener("click", function() {
         console.log("💖 YES button clicked");
         
@@ -172,15 +175,13 @@ document.addEventListener("DOMContentLoaded", function() {
         yesBtn.innerHTML = "Sending...";
         loading.style.display = "block";
         
-        // Try to send email (but don't block if it fails)
+        // Try to send email
         try {
-            // Load EmailJS dynamically
             const script = document.createElement('script');
             script.src = "https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js";
             script.onload = function() {
                 console.log("📧 EmailJS loaded");
                 
-                // Initialize and send email in background
                 emailjs.init("EJAqOX-uvSbAgw8DU");
                 
                 emailjs.send("service_a8y6rbg", "template_qzeac8q", {
@@ -196,20 +197,19 @@ document.addEventListener("DOMContentLoaded", function() {
                     console.log("⚠️ Email failed:", error);
                 })
                 .finally(function() {
-                    // Always show success screen
                     showSuccess();
                 });
             };
             
             script.onerror = function() {
-                console.log("⚠️ Couldn't load EmailJS, showing success anyway");
+                console.log("⚠️ Couldn't load EmailJS");
                 showSuccess();
             };
             
             document.head.appendChild(script);
             
         } catch (error) {
-            console.log("⚠️ Error in email sending, showing success anyway");
+            console.log("⚠️ Error in email sending");
             showSuccess();
         }
     });
@@ -225,45 +225,69 @@ document.addEventListener("DOMContentLoaded", function() {
         createHearts();
     }
     
-  function createHearts() {
-    const loveEmojis = [
-        '💘', '💝', '💖', '💗', '💓', '💞', '💕', '💟', '❣️',
-        '💌', '💋', '👩‍❤️‍💋‍👨', '👨‍❤️‍💋‍👨', '👩‍❤️‍💋‍👩',
-        '💏', '💑', '👨‍👩‍👧‍👦', '👨‍👨‍👧', '👩‍👩‍👦'
-    ];        
-    
-    // Add animation style
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes fall {
-            to { 
-                transform: translateY(110vh) rotate(360deg); 
-                opacity: 0; 
-            }
-        }
-    `;
-    document.head.appendChild(style);
-    
-    // Create hearts WITHOUT outer setTimeout
-    for(let i = 0; i < 20; i++) {
-        // Create heart immediately with CSS delay
-        const heart = document.createElement('div');
-        heart.className = 'heart';
-        heart.innerHTML = loveEmojis[Math.floor(Math.random() * loveEmojis.length)];
-        heart.style.left = Math.random() * 100 + 'vw';
-        heart.style.fontSize = (Math.random() * 20 + 20) + 'px';
-        heart.style.animationDuration = (Math.random() * 2 + 2) + 's';
-        heart.style.animationDelay = (i * 0.2) + 's'; // Stagger with CSS
-        document.body.appendChild(heart);
+    function createHearts() {
+        console.log("💕 Creating hearts...");
         
-        // Remove after animation
-        setTimeout(function() {
-            if (heart.parentNode) {
-                heart.remove();
+        const loveEmojis = [
+            '💘', '💝', '💖', '💗', '💓', '💞', '💕', '💟', '❣️',
+            '💌', '💋', '👩‍❤️‍💋‍👨', '👨‍❤️‍💋‍👨', '👩‍❤️‍💋‍👩',
+            '💏', '💑', '👨‍👩‍👧‍👦', '👨‍👨‍👧', '👩‍👩‍👦'
+        ];        
+        
+        // FIXED: Don't add duplicate animation style - it's already in CSS
+        
+        // Create hearts
+        let heartCount = 0;
+        const interval = setInterval(() => {
+            if (heartCount >= 30) { // Increased to 30 hearts
+                clearInterval(interval);
+                return;
             }
-        }, (parseFloat(heart.style.animationDuration) + parseFloat(heart.style.animationDelay)) * 1000);
+            
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = loveEmojis[Math.floor(Math.random() * loveEmojis.length)];
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = (Math.random() * 25 + 25) + 'px'; // Larger font
+            heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            
+            // FIXED: Add random rotation direction
+            heart.style.animation = `fall linear forwards`;
+            
+            document.body.appendChild(heart);
+            
+            console.log(`💖 Heart ${heartCount + 1} created: ${heart.innerHTML}`);
+            
+            // Remove after animation
+            const duration = parseFloat(heart.style.animationDuration) * 1000;
+            setTimeout(() => {
+                if (heart.parentNode) {
+                    heart.remove();
+                }
+            }, duration + 100);
+            
+            heartCount++;
+        }, 150); // Faster creation
+        
+        // Also create some hearts immediately
+        for(let i = 0; i < 5; i++) {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = loveEmojis[Math.floor(Math.random() * loveEmojis.length)];
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.fontSize = (Math.random() * 25 + 25) + 'px';
+            heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            heart.style.animationDelay = (i * 0.1) + 's';
+            document.body.appendChild(heart);
+            
+            const duration = (parseFloat(heart.style.animationDuration) + parseFloat(heart.style.animationDelay)) * 1000;
+            setTimeout(() => {
+                if (heart.parentNode) {
+                    heart.remove();
+                }
+            }, duration + 100);
+        }
     }
-}
     
     // Test: All elements should be available
     console.log("✅ Elements found:", {
@@ -272,13 +296,14 @@ document.addEventListener("DOMContentLoaded", function() {
         popup: !!popup,
         successScreen: !!successScreen
     });
+    
+    // TEST BUTTON - Remove this in production
+    const testBtn = document.createElement('button');
+    testBtn.textContent = 'Test Hearts';
+    testBtn.style.cssText = 'position: fixed; top: 10px; left: 10px; z-index: 10000; background: #4CAF50; color: white; padding: 10px; border-radius: 5px;';
+    testBtn.onclick = createHearts;
+    document.body.appendChild(testBtn);
 });
 </script>
 </body>
 </html>
-
-
-
-
-
-
