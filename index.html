@@ -80,83 +80,59 @@
     <button id="noBtn">NO 😉</button>
 
     <div class="mobile-only">📱 Best viewed on phone 😉</div>
-</div><script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+</div>
+ <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
-    emailjs.init("EJAqOX-uvSbAgw8DU"); // ✅ your Public Key
+  emailjs.init("EJAqOX-uvSbAgw8DU"); // your PUBLIC KEY
 
-    const noBtn = document.getElementById("noBtn");
-    const yesBtn = document.getElementById("yesBtn");
-    const popup = document.querySelector(".popup");
+  const yesBtn = document.getElementById("yesBtn");
+  const noBtn = document.getElementById("noBtn");
+  const popup = document.querySelector(".popup");
 
-    // Move NO button
-    ["mouseenter", "touchstart"].forEach(evt => {
-        noBtn.addEventListener(evt, () => {
-            const maxX = popup.clientWidth - noBtn.offsetWidth;
-            const maxY = popup.clientHeight - noBtn.offsetHeight;
-            noBtn.style.left = Math.random() * maxX + "px";
-            noBtn.style.top = Math.random() * maxY + "px";
-        });
+  ["mouseenter", "touchstart"].forEach(evt => {
+    noBtn.addEventListener(evt, () => {
+      const maxX = popup.clientWidth - noBtn.offsetWidth;
+      const maxY = popup.clientHeight - noBtn.offsetHeight;
+      noBtn.style.left = Math.random() * maxX + "px";
+      noBtn.style.top = Math.random() * maxY + "px";
     });
+  });
 
-    // YES button click
-    yesBtn.addEventListener("click", () => {
+  yesBtn.addEventListener("click", () => {
 
-        // 📧 Send Email
-       emailjs.send(
-  "service_a8y6rbg",
-  "template_love123",
-  {
-    to_name: "Test",
-    message: "Test email from Valentine page"
-  }
-).then(
-  function(response) {
-    alert("EMAIL SENT ✅");
-    console.log("SUCCESS", response.status, response.text);
-  },
-  function(error) {
-    alert("EMAIL FAILED ❌");
-    console.error("FAILED", error);
-  }
-);
+    emailjs.send(
+      "service_a8y6rbg",       // ✅ Service ID
+      "template_xxxxxxx",      // ❗ REPLACE with real Template ID
+      {
+        to_name: "Yerri",
+        message: "Meena clicked YES 💖"
+      }
+    ).then(
+      () => alert("EMAIL SENT ✅"),
+      err => {
+        alert("EMAIL FAILED ❌");
+        console.error(err);
+      }
+    );
 
-
-        // 🎉 Celebration screen
-        document.body.innerHTML = `
-            <div style="
-                height:100vh;
-                display:flex;
-                justify-content:center;
-                align-items:center;
-                background:linear-gradient(135deg,#ff758c,#ff7eb3);
-                color:white;
-                text-align:center;
-                font-family:Arial;">
-                <div>
-                    <h1>Yaaayyy 😍❤️</h1>
-                    <p>This just turned into my favorite day ever 💖</p>
-                </div>
-            </div>
-        `;
-
-        // 💖 Falling hearts
-        setInterval(() => {
-            const heart = document.createElement("div");
-            heart.className = "heart";
-            heart.innerHTML = "💖";
-            heart.style.left = Math.random() * 100 + "vw";
-            heart.style.animationDuration = (Math.random() * 3 + 2) + "s";
-            document.body.appendChild(heart);
-            setTimeout(() => heart.remove(), 5000);
-        }, 300);
-    });
+    document.body.innerHTML = `
+      <div style="height:100vh;display:flex;justify-content:center;align-items:center;
+      background:linear-gradient(135deg,#ff758c,#ff7eb3);color:white;text-align:center;">
+        <div>
+          <h1>Yaaayyy 😍❤️</h1>
+          <p>This just turned into my favorite day ever 💖</p>
+        </div>
+      </div>
+    `;
+  });
 });
 </script>
 
 
 </body>
 </html>
+
 
 
