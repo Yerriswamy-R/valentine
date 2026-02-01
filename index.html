@@ -174,69 +174,44 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     
     yesBtn.addEventListener("click", async () => {
-    console.log("💌 Starting email send process...");
     
     yesBtn.innerHTML = "Sending love...";
     yesBtn.disabled = true;
-    
-    const templateParams = {
-        to_name: "Yerri",
-        from_name: "Meena",
-        message: "Meena said YES to your proposal! 💖",
-        date: new Date().toLocaleString(),
-        time: new Date().toLocaleTimeString()
-    };
-    
-    let emailSuccess = false;
-    let errorMessage = "";
-    
-    // Try multiple template IDs
-    const templatesToTry = [
-        "template_valentine123",  // Your current one
-        "template_simple",        // If you create this
-        "template_default",       // Default template
-        "template_1",             // Common default
-        "template_contact",       // Another common one
-        "template_test"           // For testing
-    ];
-    
-    for (const templateId of templatesToTry) {
-        try {
-            console.log(`Trying template: ${templateId}`);
-            
-            const response = await emailjs.send(
-                "service_a8y6rbg",
-                templateId,
-                templateParams
+    loading.style.display = "block";
+    const templateId = "template_qzeac8q";
+    const response = await emailjs.send(
+                "service_a8y6rbg",      // Your Service ID
+                templateId,             // ✅ Correct template ID
+                {
+                    to_name: "Yerri",
+                    from_name: "Meena",
+                    message: "Meena clicked YES on your proposal! 💖❤️🎉",
+                    date: new Date().toLocaleString(),
+                    time: new Date().toLocaleTimeString()
+                }
             );
+          showSuccess();
             
-            console.log(`✅ Success with ${templateId}:`, response.status);
-            emailSuccess = true;
-            break;
+        } catch (error) {
+            console.error("❌ Email failed:", error);
+            console.error("Error details:", error.text || error);
             
-        } catch (err) {
-            console.log(`❌ ${templateId} failed:`, err.text || err);
-            errorMessage = err.text || "Unknown error";
+            // Show success anyway (email might fail but proposal is accepted)
+            showSuccess();
+            
+            // Optional error alert
+            alert("Got your YES! 💖\n\n(Email failed, but I'll tell Yerri personally!)");
         }
-    }
+    });
     
-    // Show appropriate message
-    if (emailSuccess) {
-        showSuccess("✅ Email notification sent to Yerri! 💌");
-    } else {
-        showSuccess("💖 I got your YES! Will tell Yerri personally! 😊");
-        console.log("All email attempts failed:", errorMessage);
+    function showSuccess() {
+        // Hide popup, show success message
+        document.getElementById("mainPopup").style.display = "none";
+        document.getElementById("successMessage").style.display = "block";
         
-        // Save response locally as backup
-        localStorage.setItem('proposalResponse', JSON.stringify({
-            accepted: true,
-            from: "Meena",
-            to: "Yerri",
-            timestamp: new Date().toISOString(),
-            message: "YES! 💖"
-        }));
+        // Create falling hearts animation
+        createHearts();
     }
-});
     
     function showSuccess() {
         // Hide popup, show success message
@@ -276,4 +251,5 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 </body>
 </html>
+
 
