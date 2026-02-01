@@ -4,257 +4,83 @@
 <meta charset="UTF-8">
 <title>Always Us ❤️</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <style>
-    body {
-        margin: 0;
-        font-family: 'Arial', sans-serif;
-        background: linear-gradient(135deg, #ff758c, #ff7eb3);
-        height: 100vh;
-        overflow: hidden;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: #fff;
-    }
-
-    .popup {
-        background: #fff;
-        color: #333;
-        padding: 30px;
-        border-radius: 20px;
-        text-align: center;
-        width: 320px;
-        position: relative;
-        z-index: 2;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    }
-
+    body { margin: 0; font-family: Arial; background: linear-gradient(135deg, #ff758c, #ff7eb3); height: 100vh; display: flex; justify-content: center; align-items: center; color: #fff; }
+    .popup { background: #fff; color: #333; padding: 40px; border-radius: 20px; text-align: center; width: 350px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); position: relative; }
     h2 span { color: #ff4d6d; }
-
-    button {
-        padding: 12px 25px;
-        font-size: 16px;
-        border: none;
-        border-radius: 30px;
-        cursor: pointer;
-        margin: 10px;
-        transition: all 0.3s;
-    }
-
-    #yesBtn { 
-        background: #ff4d6d; 
-        color: #fff; 
-    }
-    #yesBtn:hover {
-        background: #ff3366;
-        transform: scale(1.05);
-    }
-    
-    #noBtn { 
-        background: #ccc; 
-        position: absolute; 
-        transition: left 0.3s, top 0.3s;
-    }
-
-    .mobile-only {
-        display: none;
-        margin-top: 10px;
-        font-size: 14px;
-        color: #ff4d6d;
-    }
-
-    @media (max-width: 768px) { 
-        .mobile-only { display: block; } 
-        .popup {
-            width: 90%;
-            margin: 20px;
-        }
-    }
-
-    .heart {
-        position: fixed;
-        top: -10px;
-        font-size: 20px;
-        animation: fall linear infinite;
-        z-index: 1;
-    }
-
-    @keyframes fall { 
-        to { transform: translateY(110vh); } 
-    }
-    
-    .success-message {
-        display: none;
-        text-align: center;
-        padding: 40px;
-    }
-    
-    .success-message h1 {
-        font-size: 3em;
-        margin-bottom: 20px;
-        animation: pulse 2s infinite;
-    }
-    
-    @keyframes pulse {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.1); }
-        100% { transform: scale(1); }
-    }
-    
-    .loading {
-        display: none;
-        font-size: 18px;
-        color: #ff4d6d;
-        margin-top: 15px;
-    }
+    button { padding: 15px 30px; font-size: 18px; border: none; border-radius: 30px; cursor: pointer; margin: 10px; }
+    #yesBtn { background: #ff4d6d; color: #fff; }
+    #noBtn { background: #ccc; position: absolute; }
 </style>
 </head>
-
 <body>
-
-<!-- Background Music (optional) -->
-<audio id="bgMusic" loop>
-    <source src="https://assets.mixkit.co/music/preview/mixkit-clear-love-738.mp3" type="audio/mpeg">
-</audio>
 
 <div class="popup" id="mainPopup">
     <h2>Hey <span>Meena</span> 💕</h2>
     <p>Can I keep u forever? 💖</p>
-
     <button id="yesBtn">YES 😍</button>
     <button id="noBtn">NO 😉</button>
-    
-    <div class="loading" id="loading">Sending love... 💌</div>
-
-    <div class="mobile-only">📱 Best viewed on phone 😉</div>
 </div>
 
-<div class="success-message" id="successMessage" style="display: none;">
-    <h1>Yaaayyy 😍❤️</h1>
-    <p>This just turned into my favorite day ever 💖</p>
-    <p style="margin-top: 20px; font-size: 0.9em; color: rgba(255,255,255,0.8);">
-        Notification sent to Yerri! 💌
-    </p>
-</div>
-
-<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-    
-    // ✅ Initialize EmailJS with YOUR Public Key
-    emailjs.init("EJAqOX-uvSbAgw8DU");
-    
     const yesBtn = document.getElementById("yesBtn");
     const noBtn = document.getElementById("noBtn");
     const popup = document.querySelector(".popup");
-    const loading = document.getElementById("loading");
-    const bgMusic = document.getElementById("bgMusic");
     
-    // Optional: Play music on user interaction
-    document.body.addEventListener('click', () => {
-        if(bgMusic && bgMusic.paused) {
-            bgMusic.volume = 0.3;
-            bgMusic.play().catch(e => console.log("Autoplay prevented"));
-        }
+    // Moving NO button
+    noBtn.addEventListener("mouseenter", () => {
+        const maxX = popup.clientWidth - noBtn.offsetWidth - 10;
+        const maxY = popup.clientHeight - noBtn.offsetHeight - 10;
+        noBtn.style.left = Math.random() * maxX + "px";
+        noBtn.style.top = Math.random() * maxY + "px";
     });
     
-    // Make NO button move when hovered or touched
-    ["mouseenter", "touchstart"].forEach(evt => {
-        noBtn.addEventListener(evt, (e) => {
-            e.preventDefault();
-            const maxX = popup.clientWidth - noBtn.offsetWidth - 20;
-            const maxY = popup.clientHeight - noBtn.offsetHeight - 20;
-            const randomX = Math.random() * maxX;
-            const randomY = Math.random() * maxY;
-            
-            noBtn.style.left = `${randomX}px`;
-            noBtn.style.top = `${randomY}px`;
-        });
-    });
-    
-    yesBtn.addEventListener("click", async () => {
-        console.log("💌 Starting email send process...");
+    // YES button - Simple celebration
+    yesBtn.addEventListener("click", () => {
+        // Save response
+        const response = {
+            accepted: true,
+            from: "Meena",
+            to: "Yerri",
+            timestamp: new Date().toISOString(),
+            message: "YES! 💖"
+        };
         
-        yesBtn.innerHTML = "Sending love...";
-        yesBtn.disabled = true;
-        loading.style.display = "block";
+        localStorage.setItem('proposalResponse', JSON.stringify(response));
         
-        // ✅ Use the EXACT template ID from your screenshot
-        const templateId = "template_qzeac8q";  // ⭐ THIS IS THE KEY CHANGE ⭐
+        // Show celebration
+        document.body.innerHTML = `
+            <div style="text-align:center; padding:40px;">
+                <h1 style="font-size:48px; margin-bottom:20px;">YAAAYY! 😍❤️</h1>
+                <p style="font-size:24px;">Meena said YES! 💖</p>
+                <p>Time: ${new Date().toLocaleString()}</p>
+                <div style="margin-top:40px; font-size:40px;">💖🎉🥳❤️🎊</div>
+            </div>
+        `;
         
-        try {
-            console.log(`Using template: ${templateId}`);
-            
-            const response = await emailjs.send(
-                "service_a8y6rbg",      // Your Service ID
-                templateId,             // ✅ Correct template ID
-                {
-                    to_name: "Yerri",
-                    from_name: "Meena",
-                    message: "Meena clicked YES on your proposal! 💖❤️🎉",
-                    date: new Date().toLocaleString(),
-                    time: new Date().toLocaleTimeString()
-                }
-            );
-            
-            console.log("✅ Email sent successfully!", response);
-            console.log("Status:", response.status);
-            console.log("Text:", response.text);
-            
-            // Show success
-            showSuccess();
-            
-        } catch (error) {
-            console.error("❌ Email failed:", error);
-            console.error("Error details:", error.text || error);
-            
-            // Show success anyway (email might fail but proposal is accepted)
-            showSuccess();
-            
-            // Optional error alert
-            alert("Got your YES! 💖\n\n(Email failed, but I'll tell Yerri personally!)");
-        }
-    });
-    
-    function showSuccess() {
-        // Hide popup, show success message
-        document.getElementById("mainPopup").style.display = "none";
-        document.getElementById("successMessage").style.display = "block";
+        console.log("💌 Proposal Response:", response);
         
-        // Create falling hearts animation
-        createHearts();
-    }
-    
-    function createHearts() {
-        // Create falling hearts animation
-        const heartEmojis = ['❤️', '💖', '💕', '💗', '💓', '💘'];
-        
-        for(let i = 0; i < 50; i++) {
+        // Create hearts
+        for(let i=0; i<30; i++) {
             setTimeout(() => {
                 const heart = document.createElement('div');
-                heart.className = 'heart';
-                heart.innerHTML = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
-                heart.style.left = Math.random() * 100 + 'vw';
-                heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
-                heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
-                heart.style.opacity = Math.random() * 0.5 + 0.5;
+                heart.innerHTML = '💖';
+                heart.style.position = 'fixed';
+                heart.style.left = Math.random()*100 + 'vw';
+                heart.style.top = '-50px';
+                heart.style.fontSize = '30px';
+                heart.style.animation = `fall ${Math.random()*3+2}s linear forwards`;
                 document.body.appendChild(heart);
-                
-                // Remove heart after animation
-                setTimeout(() => {
-                    heart.remove();
-                }, 5000);
-            }, i * 100);
+                setTimeout(() => heart.remove(), 5000);
+            }, i*100);
         }
-    }
-    
-    // Debug info
-    console.log("🔧 EmailJS Debug Info:");
-    console.log("Public Key: EJAqOX-uvSbAgw8DU");
-    console.log("Service ID: service_a8y6rbg");
-    console.log("Template ID to use: template_qzeac8q");
-    console.log("Ready to send emails! 💌");
+        
+        // Add animation
+        const style = document.createElement('style');
+        style.textContent = `@keyframes fall { to { transform: translateY(110vh) rotate(360deg); opacity: 0; } }`;
+        document.head.appendChild(style);
+    });
 });
 </script>
 </body>
