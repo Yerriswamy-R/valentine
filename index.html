@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const yesBtn = document.getElementById("yesBtn");
     const popup = document.querySelector(".popup");
 
-    // Move NO button when hovered/touched
+    // Move NO button
     ["mouseenter", "touchstart"].forEach(evt => {
         noBtn.addEventListener(evt, () => {
             const maxX = popup.clientWidth - noBtn.offsetWidth;
@@ -100,10 +100,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // YES click - WhatsApp notification + celebration
     yesBtn.addEventListener("click", () => {
-        const myNumber = "919908028233"; // WhatsApp number with country code
+        // ✅ Replace with your WhatsApp number including country code (no +)
+        const myNumber = "919908028233";
         const message = encodeURIComponent("Yaaayyy 😍❤️ Meena just clicked YES on your Valentine popup!");
+
+        // Open WhatsApp reliably
         window.open(`https://wa.me/${myNumber}?text=${message}`, "_blank");
 
+        // Show celebration screen
         document.body.innerHTML = `
             <div style="
                 height:100vh;
@@ -122,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
     });
 
-    // Falling hearts
+    // Falling hearts animation
     setInterval(() => {
         const heart = document.createElement("div");
         heart.className = "heart";
