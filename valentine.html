@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Be My Valentine ❤️</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #ff758c, #ff7eb3);
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+    }
+
+    .popup {
+        background: #fff;
+        color: #333;
+        padding: 30px;
+        border-radius: 15px;
+        text-align: center;
+        width: 300px;
+        position: relative;
+    }
+
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        border: none;
+        border-radius: 20px;
+        cursor: pointer;
+        margin: 10px;
+    }
+
+    #yesBtn {
+        background: #ff4d6d;
+        color: #fff;
+    }
+
+    #noBtn {
+        background: #ccc;
+        position: absolute;
+    }
+</style>
+</head>
+<body>
+
+<div class="popup">
+    <h2>Will you be my Valentine? 💖</h2>
+    <button id="yesBtn">YES 😍</button>
+    <button id="noBtn">NO 😏</button>
+</div>
+
+<script>
+    const noBtn = document.getElementById("noBtn");
+
+    noBtn.addEventListener("mouseover", () => {
+        const popup = document.querySelector(".popup");
+        const maxX = popup.clientWidth - noBtn.clientWidth;
+        const maxY = popup.clientHeight - noBtn.clientHeight;
+
+        const randomX = Math.random() * maxX;
+        const randomY = Math.random() * maxY;
+
+        noBtn.style.left = randomX + "px";
+        noBtn.style.top = randomY + "px";
+    });aacc
+
+    document.getElementById("yesBtn").addEventListener("click", () => {
+        document.body.innerHTML = `
+            <h1 style="text-align:center;">
+                Yaaayyy! 💕🥰 <br><br>
+                I knew it! Happy Valentine’s Day 💖
+            </h1>
+        `;
+    });
+</script>
+
+</body>
+</html>
