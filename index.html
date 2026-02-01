@@ -3,32 +3,42 @@
 <head>
 <meta charset="UTF-8">
 <title>Be My Valentine ❤️</title>
+
 <style>
+    * {
+        box-sizing: border-box;
+    }
+
     body {
+        margin: 0;
         font-family: Arial, sans-serif;
         background: linear-gradient(135deg, #ff758c, #ff7eb3);
         height: 100vh;
         display: flex;
         justify-content: center;
         align-items: center;
-        color: #fff;
     }
 
     .popup {
         background: #fff;
         color: #333;
         padding: 30px;
-        border-radius: 15px;
+        border-radius: 20px;
         text-align: center;
-        width: 300px;
+        width: 320px;
         position: relative;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    h2 {
+        margin-bottom: 20px;
     }
 
     button {
-        padding: 10px 20px;
+        padding: 12px 25px;
         font-size: 16px;
         border: none;
-        border-radius: 20px;
+        border-radius: 25px;
         cursor: pointer;
         margin: 10px;
     }
@@ -36,14 +46,20 @@
     #yesBtn {
         background: #ff4d6d;
         color: #fff;
+        position: relative;
+        z-index: 3;
     }
 
     #noBtn {
         background: #ccc;
         position: absolute;
+        z-index: 2;
+        right: 30px;
+        bottom: 20px;
     }
 </style>
 </head>
+
 <body>
 
 <div class="popup">
@@ -53,24 +69,27 @@
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
 
-    const noBtn = document.getElementById("noBtn");
     const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
     const popup = document.querySelector(".popup");
 
-    // Move NO button
+    // NO button runs away 😆
     ["mouseenter", "touchstart"].forEach(evt => {
-    noBtn.addEventListener(evt, () => {
-        const maxX = popup.clientWidth - noBtn.offsetWidth;
-        const maxY = popup.clientHeight - noBtn.offsetHeight;
+        noBtn.addEventListener(evt, () => {
+            const maxX = popup.clientWidth - noBtn.offsetWidth;
+            const maxY = popup.clientHeight - noBtn.offsetHeight;
 
-        noBtn.style.left = Math.random() * maxX + "px";
-        noBtn.style.top = Math.random() * maxY + "px";
+            const x = Math.random() * maxX;
+            const y = Math.random() * maxY;
+
+            noBtn.style.left = x + "px";
+            noBtn.style.top = y + "px";
+        });
     });
-});
 
-    // YES click
+    // YES button ❤️
     yesBtn.addEventListener("click", () => {
         document.body.innerHTML = `
             <div style="
@@ -95,6 +114,3 @@ document.addEventListener("DOMContentLoaded", function () {
 
 </body>
 </html>
-
-
-
