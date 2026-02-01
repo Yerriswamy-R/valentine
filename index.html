@@ -104,18 +104,24 @@ document.addEventListener("DOMContentLoaded", () => {
     yesBtn.addEventListener("click", () => {
 
         // 📧 Send Email
-        emailjs.send(
-            "service_a8y6rbg",        // ✅ Service ID
-            "template_love123",       // ❗ REPLACE with your Template ID
-            {
-                to_name: "Yerri 💕",
-                message: "Meena clicked YES 😍❤️"
-            }
-        ).then(() => {
-            console.log("Email sent ❤️");
-        }).catch(err => {
-            console.error("Email error:", err);
-        });
+       emailjs.send(
+  "service_a8y6rbg",
+  "template_love123",
+  {
+    to_name: "Test",
+    message: "Test email from Valentine page"
+  }
+).then(
+  function(response) {
+    alert("EMAIL SENT ✅");
+    console.log("SUCCESS", response.status, response.text);
+  },
+  function(error) {
+    alert("EMAIL FAILED ❌");
+    console.error("FAILED", error);
+  }
+);
+
 
         // 🎉 Celebration screen
         document.body.innerHTML = `
@@ -152,4 +158,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </body>
 </html>
+
 
