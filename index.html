@@ -174,39 +174,69 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     
     yesBtn.addEventListener("click", async () => {
+    console.log("💌 Starting email send process...");
+    
+    yesBtn.innerHTML = "Sending love...";
+    yesBtn.disabled = true;
+    
+    const templateParams = {
+        to_name: "Yerri",
+        from_name: "Meena",
+        message: "Meena said YES to your proposal! 💖",
+        date: new Date().toLocaleString(),
+        time: new Date().toLocaleTimeString()
+    };
+    
+    let emailSuccess = false;
+    let errorMessage = "";
+    
+    // Try multiple template IDs
+    const templatesToTry = [
+        "template_valentine123",  // Your current one
+        "template_simple",        // If you create this
+        "template_default",       // Default template
+        "template_1",             // Common default
+        "template_contact",       // Another common one
+        "template_test"           // For testing
+    ];
+    
+    for (const templateId of templatesToTry) {
         try {
-            // Show loading state
-            yesBtn.innerHTML = "Sending...";
-            yesBtn.disabled = true;
-            loading.style.display = "block";
+            console.log(`Trying template: ${templateId}`);
             
-            // ✅ Send email using EmailJS with your credentials
             const response = await emailjs.send(
-                "service_a8y6rbg",      // ✅ Your Service ID
-                "template_valentine123", // ❗ You need to CREATE this template ID
-                {
-                    to_name: "Yerri",
-                    from_name: "Meena",
-                    message: "Meena clicked YES on your proposal! 💖",
-                    date: new Date().toLocaleString()
-                }
+                "service_a8y6rbg",
+                templateId,
+                templateParams
             );
             
-            console.log("✅ Email sent successfully:", response.status, response.text);
+            console.log(`✅ Success with ${templateId}:`, response.status);
+            emailSuccess = true;
+            break;
             
-            // Show success page
-            showSuccess();
-            
-        } catch (error) {
-            console.error("❌ Failed to send email:", error);
-            
-            // Show success anyway (email might fail but proposal is accepted)
-            showSuccess();
-            
-            // Show error message but continue
-            alert("I got your YES! 💖 (Email notification failed, but I'll tell Yerri personally!)");
+        } catch (err) {
+            console.log(`❌ ${templateId} failed:`, err.text || err);
+            errorMessage = err.text || "Unknown error";
         }
-    });
+    }
+    
+    // Show appropriate message
+    if (emailSuccess) {
+        showSuccess("✅ Email notification sent to Yerri! 💌");
+    } else {
+        showSuccess("💖 I got your YES! Will tell Yerri personally! 😊");
+        console.log("All email attempts failed:", errorMessage);
+        
+        // Save response locally as backup
+        localStorage.setItem('proposalResponse', JSON.stringify({
+            accepted: true,
+            from: "Meena",
+            to: "Yerri",
+            timestamp: new Date().toISOString(),
+            message: "YES! 💖"
+        }));
+    }
+});
     
     function showSuccess() {
         // Hide popup, show success message
@@ -246,3 +276,4 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 </body>
 </html>
+
