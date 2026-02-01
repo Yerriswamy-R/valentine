@@ -49,34 +49,52 @@
 <div class="popup">
     <h2>Will you be my Valentine? 💖</h2>
     <button id="yesBtn">YES 😍</button>
-    <button id="noBtn">NO 😏</button>
+    <button id="noBtn">NO 😉</button>
 </div>
 
 <script>
+document.addEventListener("DOMContentLoaded", function () {
+
     const noBtn = document.getElementById("noBtn");
+    const yesBtn = document.getElementById("yesBtn");
+    const popup = document.querySelector(".popup");
 
-    noBtn.addEventListener("mouseover", () => {
-        const popup = document.querySelector(".popup");
-        const maxX = popup.clientWidth - noBtn.clientWidth;
-        const maxY = popup.clientHeight - noBtn.clientHeight;
+    // Move NO button
+    noBtn.addEventListener("mouseenter", () => {
+        const maxX = popup.clientWidth - noBtn.offsetWidth;
+        const maxY = popup.clientHeight - noBtn.offsetHeight;
 
-        const randomX = Math.random() * maxX;
-        const randomY = Math.random() * maxY;
+        const x = Math.random() * maxX;
+        const y = Math.random() * maxY;
 
-        noBtn.style.left = randomX + "px";
-        noBtn.style.top = randomY + "px";
-    });aacc
+        noBtn.style.left = x + "px";
+        noBtn.style.top = y + "px";
+    });
 
-    document.getElementById("yesBtn").addEventListener("click", () => {
+    // YES click
+    yesBtn.addEventListener("click", () => {
         document.body.innerHTML = `
-            <h1 style="text-align:center;">
-                Yaaayyy! 💕🥰 <br><br>
-                I knew it! Happy Valentine’s Day 💖
-            </h1>
+            <div style="
+                height:100vh;
+                display:flex;
+                justify-content:center;
+                align-items:center;
+                background:linear-gradient(135deg,#ff758c,#ff7eb3);
+                color:white;
+                text-align:center;
+                font-family:Arial;">
+                <div>
+                    <h1>Yaaayyy 😍❤️</h1>
+                    <p>You just made my Valentine’s Day perfect 💖</p>
+                </div>
+            </div>
         `;
     });
+
+});
 </script>
 
 </body>
 </html>
+
 
