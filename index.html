@@ -225,60 +225,45 @@ document.addEventListener("DOMContentLoaded", function() {
         createHearts();
     }
     
-    function createHearts() {
-            const loveEmojis = [
-            '💘', // Heart with arrow
-            '💝', // Heart with ribbon
-            '💖', // Sparkling heart
-            '💗', // Growing heart
-            '💓', // Beating heart
-            '💞', // Revolving hearts
-            '💕', // Two hearts
-            '💟', // Heart decoration
-            '❣️', // Heart exclamation
-            '💌', // Love letter
-            '💋', // Kiss mark
-            '👩‍❤️‍💋‍👨', // Kiss: Woman, Man
-            '👨‍❤️‍💋‍👨', // Kiss: Man, Man
-            '👩‍❤️‍💋‍👩', // Kiss: Woman, Woman
-            '💏', // Kiss
-            '💑',  // Couple with heart
-            '👨‍👩‍👧‍👦', // Family: Man, Woman, Girl, Boy
-            '👨‍👨‍👧', // Family: Man, Man, Girl
-            '👩‍👩‍👦'  // Family: Woman, Woman, Boy
-        ];        
-        // Add animation style
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes fall {
-                to { 
-                    transform: translateY(110vh) rotate(360deg); 
-                    opacity: 0; 
-                }
+  function createHearts() {
+    const loveEmojis = [
+        '💘', '💝', '💖', '💗', '💓', '💞', '💕', '💟', '❣️',
+        '💌', '💋', '👩‍❤️‍💋‍👨', '👨‍❤️‍💋‍👨', '👩‍❤️‍💋‍👩',
+        '💏', '💑', '👨‍👩‍👧‍👦', '👨‍👨‍👧', '👩‍👩‍👦'
+    ];        
+    
+    // Add animation style
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes fall {
+            to { 
+                transform: translateY(110vh) rotate(360deg); 
+                opacity: 0; 
             }
-        `;
-        document.head.appendChild(style);
-        
-        // Create hearts
-        for(let i = 0; i < 20; i++) {
-            setTimeout(function() {
-                const heart = document.createElement('div');
-                heart.className = 'heart';
-                heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
-                heart.style.left = Math.random() * 100 + 'vw';
-                heart.style.fontSize = (Math.random() * 20 + 20) + 'px';
-                heart.style.animationDuration = (Math.random() * 2 + 2) + 's';
-                document.body.appendChild(heart);
-                
-                // Remove after animation
-                setTimeout(function() {
-                    if (heart.parentNode) {
-                        heart.remove();
-                    }
-                }, 5000);
-            }, i * 200);
         }
+    `;
+    document.head.appendChild(style);
+    
+    // Create hearts WITHOUT outer setTimeout
+    for(let i = 0; i < 20; i++) {
+        // Create heart immediately with CSS delay
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        heart.innerHTML = loveEmojis[Math.floor(Math.random() * loveEmojis.length)];
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.fontSize = (Math.random() * 20 + 20) + 'px';
+        heart.style.animationDuration = (Math.random() * 2 + 2) + 's';
+        heart.style.animationDelay = (i * 0.2) + 's'; // Stagger with CSS
+        document.body.appendChild(heart);
+        
+        // Remove after animation
+        setTimeout(function() {
+            if (heart.parentNode) {
+                heart.remove();
+            }
+        }, (parseFloat(heart.style.animationDuration) + parseFloat(heart.style.animationDelay)) * 1000);
     }
+}
     
     // Test: All elements should be available
     console.log("✅ Elements found:", {
@@ -291,6 +276,7 @@ document.addEventListener("DOMContentLoaded", function() {
 </script>
 </body>
 </html>
+
 
 
 
