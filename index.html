@@ -11,9 +11,9 @@
 
     body {
         margin: 0;
+        height: 100vh;
         font-family: Arial, sans-serif;
         background: linear-gradient(135deg, #ff758c, #ff7eb3);
-        height: 100vh;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -21,41 +21,40 @@
 
     .popup {
         background: #fff;
-        color: #333;
         padding: 30px;
         border-radius: 20px;
         text-align: center;
         width: 320px;
+        height: 220px;
         position: relative;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     }
 
     h2 {
-        margin-bottom: 20px;
+        margin-bottom: 30px;
+        color: #333;
     }
 
     button {
-        padding: 12px 25px;
+        padding: 12px 26px;
         font-size: 16px;
         border: none;
         border-radius: 25px;
         cursor: pointer;
-        margin: 10px;
     }
 
     #yesBtn {
         background: #ff4d6d;
         color: #fff;
         position: relative;
-        z-index: 3;
+        z-index: 10; /* 🔥 always on top */
     }
 
     #noBtn {
         background: #ccc;
         position: absolute;
-        z-index: 2;
-        right: 30px;
-        bottom: 20px;
+        z-index: 1;
+        top: 130px;
+        left: 110px;
     }
 </style>
 </head>
@@ -75,17 +74,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const noBtn = document.getElementById("noBtn");
     const popup = document.querySelector(".popup");
 
-    // NO button runs away 😆
-    ["mouseenter", "touchstart"].forEach(evt => {
+    // NO button escapes 😆
+    ["mouseenter", "click", "touchstart"].forEach(evt => {
         noBtn.addEventListener(evt, () => {
             const maxX = popup.clientWidth - noBtn.offsetWidth;
             const maxY = popup.clientHeight - noBtn.offsetHeight;
 
-            const x = Math.random() * maxX;
-            const y = Math.random() * maxY;
-
-            noBtn.style.left = x + "px";
-            noBtn.style.top = y + "px";
+            noBtn.style.left = Math.random() * maxX + "px";
+            noBtn.style.top  = Math.random() * maxY + "px";
         });
     });
 
