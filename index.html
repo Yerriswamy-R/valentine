@@ -60,16 +60,15 @@ document.addEventListener("DOMContentLoaded", function () {
     const popup = document.querySelector(".popup");
 
     // Move NO button
-    noBtn.addEventListener("mouseenter", () => {
+    ["mouseenter", "touchstart"].forEach(evt => {
+    noBtn.addEventListener(evt, () => {
         const maxX = popup.clientWidth - noBtn.offsetWidth;
         const maxY = popup.clientHeight - noBtn.offsetHeight;
 
-        const x = Math.random() * maxX;
-        const y = Math.random() * maxY;
-
-        noBtn.style.left = x + "px";
-        noBtn.style.top = y + "px";
+        noBtn.style.left = Math.random() * maxX + "px";
+        noBtn.style.top = Math.random() * maxY + "px";
     });
+});
 
     // YES click
     yesBtn.addEventListener("click", () => {
@@ -96,5 +95,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 </body>
 </html>
+
 
 
